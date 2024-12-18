@@ -53,5 +53,8 @@ function get_items()
     }
     wp_reset_postdata();
   }
-  return rest_ensure_response($testimonials);
+  $response =  rest_ensure_response($testimonials);
+  $response->header('X-WP-Total', (int) $query->found_posts);
+  $response->header('X-WP-TotalPages', (int) $query->max_num_pages);
+  return $response;
 }
