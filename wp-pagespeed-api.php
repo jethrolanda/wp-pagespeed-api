@@ -1,12 +1,12 @@
 <?php
 
 /**
- * Plugin Name: Fuel logic API
- * Description: FL API.
+ * Plugin Name: WP Pagespeed API
+ * Description: Add custom REST API endpoint to get all custom post types. The end point is /wp/v2/cpts.
  * Version: 1.0
  * Author: Xammis
  * Author URI: https://xammis.com/
- * Text Domain: fuel-logic-api
+ * Text Domain: wp-pagespeed-api
  * Domain Path: /languages/
  * Requires at least: 5.7
  * Requires PHP: 7.2
