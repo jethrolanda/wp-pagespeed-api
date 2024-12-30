@@ -14,9 +14,9 @@
 
 defined('ABSPATH') || exit;
 
-add_action('rest_api_init', 'register_testimonial_rest_route');
+add_action('rest_api_init', 'cpts_register_rest_route');
 
-function register_testimonial_rest_route()
+function cpts_register_rest_route()
 {
   register_rest_route(
     'wp/v2',
@@ -28,7 +28,7 @@ function register_testimonial_rest_route()
   );
 }
 
-function get_items()
+function get_items($request)
 {
   $post_types = get_post_types(array('public' => true));
   $delist = array('page', 'post', 'attachment');
@@ -36,24 +36,27 @@ function get_items()
   // remove post types
   $arr_final = array_diff($post_types, $delist);
 
-  $testimonials = array();
+  $posts = array();
   $args = array(
     'post_type' => $arr_final,
+    'page' => $request['page'],
+    'paged' => $request['page']
     // 'nopaging' => true,
   );
   $query = new WP_Query($args);
   if ($query->have_posts()) {
     while ($query->have_posts()) {
       $query->the_post();
-      $testimonial_data = array(
+      $data = array(
+        'id' => get_the_ID(),
         'link' => get_permalink(),
         // Add other fields as needed
       );
-      $testimonials[] = $testimonial_data;
+      $posts[] = $data;
     }
     wp_reset_postdata();
   }
-  $response =  rest_ensure_response($testimonials);
+  $response =  rest_ensure_response($posts);
   $response->header('X-WP-Total', (int) $query->found_posts);
   $response->header('X-WP-TotalPages', (int) $query->max_num_pages);
   return $response;
